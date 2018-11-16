@@ -211,7 +211,7 @@ while flag == True:
     ans = input('\n\tGive it another hang? (Yes/No): ')
     if ans.lower() == 'no':
         clear_output()
-        print('\nEveryday above ground is a good day!')
+        print('\n\t\tEvery day above ground is a good day!')
         flag = False
     # <<<<<<<<<<<<<<<<<<<<<<<<possible easter egg here
 
