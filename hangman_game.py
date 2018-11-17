@@ -190,7 +190,7 @@ while flag == True:
             graphicHangmanBasic(guesses)
             gameDisplay()
             if len(ans) != 1:
-                print('You did not enter your guess correctly. Try again.')
+                print('\nYou did not enter your guess correctly. Try again.')
             else:
                 secret_sol = solDisplay(sol, secret_sol, ans)
                 clear_output(); cls()
