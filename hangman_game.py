@@ -4,22 +4,24 @@ from random import choice
 # Importing for clearing capabilities
 from IPython.display import clear_output
 
+import sys
 import os
 cls = lambda: os.system('cls')
 
 def gameDiff(diff):
-
-    if diff.lower() == 'hard':
+    if diff.lower() == 'x':
+        return 1
+    elif diff.lower() == 'h':
         return 3
-    elif diff.lower() == 'med':
+    elif diff.lower() == 'm':
         return 5
     else:
         return 7
 
 
 def gameDisplay():
-    print(secret_sol.upper())
-    print('Guesses remanining: {}'.format(guesses))
+    print('  ' + secret_sol.upper())
+    print('\nGuesses remanining: {}'.format(guesses))
     print('You have tried: {}'.format(sorted(prev_ans)))
 
 
@@ -51,6 +53,7 @@ def solDisplay(secret, cur_space, rec_guess):
 
 def graphicHangmanBasic(guesses):
     """ Draws basic hangman animation based on guess count """
+    print("")
     if guesses == 10:
         print("+======+      ")
         print("|  *   *   *  ")
@@ -141,32 +144,30 @@ words_general_l = ['account', 'addition', 'adjustment', 'advertisement', 'agreem
 
 # main program begins
 flag = True
+# game loop begins
 while flag == True:
     clear_output(); cls()
-    print("")
     graphicHangmanBasic(7)
 
     sol = choice(words_general_l)
     prev_ans = []
 
-    diff = input('Select difficulty (easy, med, hard): ')
+    diff = input("Select Wanted Level:\n\t(E) -- Outlaw\n\t(M) -- Cattle Hustler\n\t(H) -- Bank Robber\n\t(X) -- Courting Death\n\t ")
     clear_output(); cls()
 
     guesses = gameDiff(diff)
 
     secret_sol = '-' * len(sol)
 
+    # print game progress
+    graphicHangmanBasic(guesses)
+    gameDisplay()
+
+    # check guess loop begins
     while guesses > 0 and not sol == secret_sol:
 
-    #     prev_ans = prev_ans.sort() #location>>>>????
-
-        # print game progress
-        print("")
-        graphicHangmanBasic(guesses)
-        gameDisplay()
-
         # ask the user what they would like to do
-        ans = input('Guess one letter (quit to stop playing): ')
+        ans = input('\nGuess one letter (quit to escape): ')
         ans = ans.lower()
 
         # clear output from previously displayed grid
@@ -174,44 +175,51 @@ while flag == True:
 
         # base case, break on quit
         if ans == 'quit':
-            print("")
             graphicHangmanBasic(guesses)
             print('You escaped the noose!')
             print("The word was: {}".format(sol.title()))
             print('\nThanks for playing!\n\t\t\tauthor:myrse7en')
             break
         # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<possible easter egg here
+        elif ans == '111191':
+            clear_output(); cls()
+            print("\n\n\t /^^\   /^^\\\n\t(    \_/    ) \n\t \    M    /\n\t  \   A   /\n\t   \  R  /\n\t    \ I /\n\tFOR  \A/ ONE\n\t  MY  ^   AND\n    **  **  TRULY  **  **")
+            sys.exit()
         else:
+            clear_output(); cls()
+            graphicHangmanBasic(guesses)
+            gameDisplay()
             if len(ans) != 1:
-                print('You did not enter a your guess correctly. Try again.')
+                print('You did not enter your guess correctly. Try again.')
             else:
+                secret_sol = solDisplay(sol, secret_sol, ans)
+                clear_output(); cls()
+                graphicHangmanBasic(guesses)
+                gameDisplay()
                 if ans in prev_ans:
-                    print('You have already guessed that. Try again.')
+                    print('\nYou have already guessed that. Try again.')
                 elif ans in sol:
-                    print('{}!! {} is in the word!'.format(choice(['Awesome', 'Sweet', 'Great', 'Excellent']), ans))
-                    secret_sol = solDisplay(sol, secret_sol, ans)
+                    print("\n{}!! '{}' is in the word!".format(choice(['Awesome', 'Sweet', 'Great', 'Excellent']), ans))
                     prev_ans.append(ans)
                 elif ans not in sol:
                     guesses -= 1
-                    print('Wrong!! {} is not in the word!'.format(ans))
+                    print("\nWrong!! '{}' is not in the word!".format(ans))
                     prev_ans.append(ans)
     if guesses <= 0:
         clear_output(); cls()
-        print("")
         graphicHangmanBasic(0)
         print("...GAME OVER!...")
-        print("The word was: {}".format(sol.title()))
+        print("\nThe word was: {}".format(sol.title()))
     elif guesses >= 0 and ans != 'quit':
         clear_output(); cls()
-        print("")
         graphicHangmanBasic(10)
         print("...YOU WIN!...")
-        print("The word was: {}".format(sol.title()))
-    # Rerun the program
-    ans = input('\n\tGive it another hang? (Yes/No): ')
-    if ans.lower() == 'no':
+        print("\nThe word was: {}".format(sol.title()))
+    # main loop ends
+    ans = input('\n\tGive it another hang? (Y/N): ')
+    if ans.lower() == 'n':
         clear_output()
-        print('\n\t\tEvery day above ground is a good day!')
+        print('\n\n\tEvery day above ground is a good day!')
         flag = False
     # <<<<<<<<<<<<<<<<<<<<<<<<possible easter egg here
 
